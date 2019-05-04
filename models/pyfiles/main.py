@@ -97,7 +97,7 @@ def train_dl(data,adjacency_matrix,model_name,save_name,step_ahead,epochs):
   # --- CNNRNN option
   parser.add_argument('--sim_mat', type=str,help='file of similarity measurement (Required for CNNRNN, CNN)')
   parser.add_argument('--hidRNN', type=int, default=50, help='number of RNN hidden units')
-  parser.add_argument('--residual_window', type=int, default=8
+  parser.add_argument('--residual_window', type=int, default=0
   ,help='The window size of the residual component')
   parser.add_argument('--ratio', type=float, default=1.,help='The ratio between CNNRNN and residual')
   parser.add_argument('--output_fun', type=str, default=None, help='the output function of neural net')
@@ -106,7 +106,7 @@ def train_dl(data,adjacency_matrix,model_name,save_name,step_ahead,epochs):
   parser.add_argument('--save_name', type=str,  default='tmp', help='filename to save the final model')
   # --- Optimization option
   parser.add_argument('--optim', type=str, default='adam', help='optimization method')
-  parser.add_argument('--dropout', type=float, default=0.2, help='dropout applied to layers (0 = no dropout)')
+  parser.add_argument('--dropout', type=float, default=0.5, help='dropout applied to layers (0 = no dropout)')
   parser.add_argument('--epochs', type=int, default=100,help='upper epoch limit')
   parser.add_argument('--clip', type=float, default=1.,help='gradient clipping')
   parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
@@ -213,7 +213,7 @@ def mytest(data,adjacency_matrix,model_name,save_name,horizon, test_dat=None ):
   # --- CNNRNN option
   parser.add_argument('--sim_mat', type=str,help='file of similarity measurement (Required for CNNRNN, CNN)')
   parser.add_argument('--hidRNN', type=int, default=50, help='number of RNN hidden units')
-  parser.add_argument('--residual_window', type=int, default=8,help='The window size of the residual component')
+  parser.add_argument('--residual_window', type=int, default=0,help='The window size of the residual component')
   parser.add_argument('--ratio', type=float, default=1.,help='The ratio between CNNRNN and residual')
   parser.add_argument('--output_fun', type=str, default=None, help='the output function of neural net')
   # --- Logging option
@@ -221,7 +221,7 @@ def mytest(data,adjacency_matrix,model_name,save_name,horizon, test_dat=None ):
   parser.add_argument('--save_name', type=str,  default='tmp', help='filename to save the final model')
   # --- Optimization option
   parser.add_argument('--optim', type=str, default='adam', help='optimization method')
-  parser.add_argument('--dropout', type=float, default=0.2, help='dropout applied to layers (0 = no dropout)')
+  parser.add_argument('--dropout', type=float, default=0.5, help='dropout applied to layers (0 = no dropout)')
   parser.add_argument('--epochs', type=int, default=100,help='upper epoch limit')
   parser.add_argument('--clip', type=float, default=1.,help='gradient clipping')
   parser.add_argument('--lr', type=float, default=0.001, help='learning rate')

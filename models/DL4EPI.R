@@ -4,6 +4,19 @@ library(forecast)
 library(sarimaTD)
 library(reticulate)
 
+do_seasonal_difference <- function(y, ts_frequency) {
+  differenced_y <- ts(c(rep(NA, ts_frequency),
+                        y[seq(from = ts_frequency + 1, to = length(y))] -
+                          y[seq(from = 1, to = length(y) - ts_frequency)]),
+                      frequency = ts_frequency)
+  return(differenced_y)
+}
+
+invert_seasonal_difference <- function(dy, y, ts_frequency) {
+  return(ts(dy + y[length(y) + seq_along(dy) - ts_frequency],
+            freq = ts_frequency))
+}
+
 ## TO INSTALL
 ## install python 3
 ## install pip
@@ -42,7 +55,7 @@ DL4EPI <- R6Class(
       write.table(adjacency_matrix, file=adj_mat_fname,sep = ',', 
                   row.names = FALSE, col.names=FALSE)
       
-      epochs <- 500
+      epochs <- 1000
       save_name <- "tmp"
       model_name <- "CNNRNN_Res"
       ## stores data for easy access and checks to make sure it's the right class
@@ -55,10 +68,9 @@ DL4EPI <- R6Class(
         
         ## convert y vector to time series data type
       #print (private$.data)
-      y_ts <- ts(as.vector(private$.data$mat), frequency = private$.period)
+      y_ts <- do_seasonal_difference(as.vector(private$.data$mat),private$.period)
       
-      
-      print (length(y_ts))
+      print (y_ts)      
       print ("--------")
         ## fit sarimaTD with 'fit_sarima()' from sarimaTD package
         ## fit_sarima() performs box-cox transformation and seasonal differencing
@@ -94,7 +106,7 @@ DL4EPI <- R6Class(
         for (step_ahead in 1:6){
           tmp <- mytest(private$.data$mat,adj_mat_fname,model_name,save_name,step_ahead,t(newdata$mat))
           for (i_ in 1:length(tmp))
-          list_of_matrices[i_,step_ahead,] <- rnorm(private$.nsim,tmp[i_],sd=1)
+          list_of_matrices[i_,step_ahead,] <- invert_seasonal_difference(rnorm(private$.nsim,tmp[i_],sd=1),as.vector(private$.data$mat),private$.period)
         }
       #}
      # print (dim(sim_forecasts))

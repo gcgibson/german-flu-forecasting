@@ -80,7 +80,7 @@ ggplot(data=filter(data_forecasted, timezero==as.Date("2016-03-06")), aes(x=date
     geom_ribbon(aes(ymin = pred_95_lb, ymax = pred_95_ub), alpha = 0.2, fill="red") +
     facet_wrap(.~location) +
     scale_x_date(limits=as.Date(c("2015-10-01", "2016-06-01"))) +
-    ggtitle("Forecasts from 2016 epiweek 10")
+    ggtitle("Forecasts from 2016 epiweek 10") + ylim(0,60)
 
 ## forecasts from 2016-04-10, epiweek 15
 ggplot(data=filter(data_forecasted, timezero==as.Date("2016-04-10")), aes(x=date)) +
